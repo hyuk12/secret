@@ -38,14 +38,14 @@ public class UserController {
 
   @GetMapping("/me")
   public ResponseEntity<?> getProfile(
-      @RequestHeader("X-USER-ID") Integer userId) {
+      @RequestHeader("X-USER-ID") Long userId) {
     User user = userService.getUserById(userId);
     return ResponseEntity.ok(UserDto.Response.from(user));
   }
 
   @PutMapping("/me")
   public ResponseEntity<?> updateProfile(
-      @RequestHeader("X-USER-ID") Integer userId,
+      @RequestHeader("X-USER-ID") Long userId,
       @RequestBody UserDto.UpdateRequest request) {
     User user = userService.updateUser(userId, request.getName());
     return ResponseEntity.ok(UserDto.Response.from(user));
@@ -53,7 +53,7 @@ public class UserController {
 
   @PostMapping("/me/password")
   public ResponseEntity<?> changePassword(
-      @RequestHeader("X-USER-ID") Integer userId,
+      @RequestHeader("X-USER-ID") Long userId,
       @RequestBody UserDto.PasswordChangeRequest request) {
     userService.changePassword(userId, request.getCurrentPassword(), request.getNewPassword());
     return ResponseEntity.ok().build();
@@ -61,7 +61,7 @@ public class UserController {
 
   @GetMapping("/me/login-history")
   public ResponseEntity<List<UserLoginHistory>> getLoginHistory(
-      @RequestHeader("X-USER-ID") Integer userId) {
+      @RequestHeader("X-USER-ID") Long userId) {
     List<UserLoginHistory> history = userService.getUserLoginHistory(userId);
     return ResponseEntity.ok(history);
   }

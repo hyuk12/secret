@@ -52,20 +52,20 @@ public class UserService {
     return user;
   }
 
-  public User getUserById(Integer userId) {
+  public User getUserById(Long userId) {
     return userRepository.findById(userId)
         .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userId));
   }
 
   @Transactional
-  public User updateUser(Integer userId, String name) {
+  public User updateUser(Long userId, String name) {
     User user = getUserById(userId);
     user.setName(name);
     return userRepository.save(user);
   }
 
   @Transactional
-  public void changePassword(Integer userId, String currentPassword, String newPassword) {
+  public void changePassword(Long userId, String currentPassword, String newPassword) {
     User user = getUserById(userId);
 
     if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
@@ -76,7 +76,7 @@ public class UserService {
     userRepository.save(user);
   }
 
-  public List<UserLoginHistory> getUserLoginHistory(Integer userId) {
+  public List<UserLoginHistory> getUserLoginHistory(Long userId) {
     User user = getUserById(userId);
     return userLoginHistoryRepository.findByUserOrderByLoginTimeDesc(user);
   }

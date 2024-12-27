@@ -91,7 +91,7 @@ public class UserDto {
   @NoArgsConstructor(access = AccessLevel.PRIVATE)
   @AllArgsConstructor(access = AccessLevel.PRIVATE)
   public static class Response {
-    private Integer id;
+    private Long id;
     private String email;
     private String name;
     private LocalDateTime createdAt;
