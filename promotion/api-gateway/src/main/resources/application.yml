@@ -1,0 +1,98 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  cloud:
+    gateway:
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            redis-rate-limiter.requestedTokens: 1
+            key-resolver: "#{@userKeyResolver}"
+      routes:
+        - id: public-user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/signup, /api/v1/users/login, /api/v1/users/token/validate, /api/v1/users/refresh-token
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userServiceBreaker
+                fallbackUri: forward:/fallback/users
+            - name: JwtAuthenticationFilter
+        - id: coupon-service
+          uri: lb://COUPON-SERVICE
+          predicates:
+            - Path=/api/v1/coupons/**
+          filters:
+            - name: JwtAuthenticationFilter
+        - id: point-service
+          uri: lb://POINT-SERVICE
+          predicates:
+            - Path=/api/v1/points/**
+          filters:
+            - name: JwtAuthenticationFilter
+        - id: order-service
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/v1/orders/**
+          filters:
+            - name: JwtAuthenticationFilter
+        - id: product-service
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/v1/products/**
+          filters:
+            - name: JwtAuthenticationFilter
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5 # ?? ????? ??? ?? ?? ?
+        minimumNumberOfCalls: 10 # ?? ?? ??, ? ?? ??? ?? ????? ??? ???
+        permittedNumberOfCallsInHalfOpenState: 10 # ?-?? ???? ???? ?? ?
+        automaticTransitionFromOpenToHalfOpenEnabled: true # ?? ????? ???? ?-?? ??? ????? ??
+        waitDurationInOpenState: 5000 # ?? ????? ?? ??? ???? ??
+        failureRateThreshold: 50 # ??? ??, ? ??? ???? ??? ???? ?? ????? ????
+        eventConsumerBufferSize: 10
+        record-exceptions:
+          - java.util.concurrent.TimeoutException
+          - org.springframework.cloud.gateway.support.NotFoundException
+          - io.github.resilience4j.circuitbreaker.CallNotPermittedException
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+jwt:
+  secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
+  token-validity-in-seconds: 3600
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
