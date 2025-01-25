@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.study.couponservice.config.UserIdInterceptor;
 import org.study.couponservice.domain.Coupon;
 import org.study.couponservice.domain.CouponPolicy;
-import org.study.couponservice.dto.CouponDto;
+import org.study.couponservice.dto.v1.CouponDto;
 import org.study.couponservice.exception.CouponIssueException;
 import org.study.couponservice.exception.CouponNotFoundException;
 import org.study.couponservice.repository.CouponPolicyRepository;

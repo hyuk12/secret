@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.study.couponservice.domain.CouponPolicy;
-import org.study.couponservice.dto.CouponPolicyDto;
+import org.study.couponservice.dto.v1.CouponPolicyDto;
 import org.study.couponservice.exception.CouponPolicyNotFoundException;
 import org.study.couponservice.repository.CouponPolicyRepository;
 

@@ -1,12 +1,11 @@
 package org.study.couponservice.controller.v1;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.study.couponservice.domain.Coupon;
-import org.study.couponservice.dto.CouponDto;
+import org.study.couponservice.dto.v1.CouponDto;
 import org.study.couponservice.service.v1.CouponService;
 
 import java.util.List;

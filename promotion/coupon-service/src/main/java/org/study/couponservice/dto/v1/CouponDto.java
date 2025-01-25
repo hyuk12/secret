@@ -1,4 +1,4 @@
-package org.study.couponservice.dto;
+package org.study.couponservice.dto.v1;
 
 import lombok.Builder;
 import org.study.couponservice.domain.Coupon;

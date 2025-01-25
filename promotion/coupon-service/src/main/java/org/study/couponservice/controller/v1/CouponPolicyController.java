@@ -3,7 +3,7 @@ package org.study.couponservice.controller.v1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.study.couponservice.dto.CouponPolicyDto;
+import org.study.couponservice.dto.v1.CouponPolicyDto;
 import org.study.couponservice.service.v1.CouponPolicyService;
 
 import java.util.List;

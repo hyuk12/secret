@@ -42,6 +42,11 @@ public class Coupon {
         this.status = Status.AVAILABLE;
     }
 
+    public boolean isUsed() {
+        return status == Status.USED;
+    }
+
+
     public enum Status {
         AVAILABLE,
         USED,

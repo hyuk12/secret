@@ -1,4 +1,4 @@
-package org.study.couponservice.dto;
+package org.study.couponservice.dto.v2;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
